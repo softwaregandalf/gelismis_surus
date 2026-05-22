@@ -1,0 +1,67 @@
+<?xml version="1.0" ?>
+<sdf version="1.8">
+  <world name="otonom_dunya">
+    <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics"/>
+    <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors"><render_engine>ogre</render_engine></plugin>
+    <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster"/>
+    
+    <scene><ambient>1.0 1.0 1.0 1.0</ambient><background>0.5 0.7 0.9 1.0</background><shadows>true</shadows></scene>
+    <light type="directional" name="sun"><cast_shadows>true</cast_shadows><pose>0 0 10 0 0 0</pose><diffuse>1.0 1.0 1.0 1</diffuse><specular>0.5 0.5 0.5 1</specular><direction>-0.5 0.1 -0.9</direction></light>
+    
+    <model name="zemin">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision"><geometry><plane><normal>0 0 1</normal><size>100 100</size></plane></geometry></collision>
+        <visual name="visual"><geometry><plane><normal>0 0 1</normal><size>100 100</size></plane></geometry><material><ambient>0.8 0.8 0.8 1</ambient><diffuse>0.8 0.8 0.8 1</diffuse></material></visual>
+      </link>
+    </model>
+
+    <model name="kuzey_duvar"><pose>5 0 0.5 0 0 0</pose><static>true</static><link name="link"><collision name="c"><geometry><box><size>0.2 10.2 1</size></box></geometry></collision><visual name="v"><geometry><box><size>0.2 10.2 1</size></box></geometry><material><ambient>0.6 0.6 0.6 1</ambient><diffuse>0.6 0.6 0.6 1</diffuse></material></visual></link></model>
+    <model name="guney_duvar"><pose>-5 0 0.5 0 0 0</pose><static>true</static><link name="link"><collision name="c"><geometry><box><size>0.2 10.2 1</size></box></geometry></collision><visual name="v"><geometry><box><size>0.2 10.2 1</size></box></geometry><material><ambient>0.6 0.6 0.6 1</ambient><diffuse>0.6 0.6 0.6 1</diffuse></material></visual></link></model>
+    <model name="dogu_duvar"><pose>0 5 0.5 0 0 1.5707</pose><static>true</static><link name="link"><collision name="c"><geometry><box><size>0.2 10 1</size></box></geometry></collision><visual name="v"><geometry><box><size>0.2 10 1</size></box></geometry><material><ambient>0.6 0.6 0.6 1</ambient><diffuse>0.6 0.6 0.6 1</diffuse></material></visual></link></model>
+    <model name="bati_duvar"><pose>0 -5 0.5 0 0 1.5707</pose><static>true</static><link name="link"><collision name="c"><geometry><box><size>0.2 10 1</size></box></geometry></collision><visual name="v"><geometry><box><size>0.2 10 1</size></box></geometry><material><ambient>0.6 0.6 0.6 1</ambient><diffuse>0.6 0.6 0.6 1</diffuse></material></visual></link></model>
+    
+    <model name="kirmizi_engel"><pose>2 2 0.5 0 0 0.785</pose><static>true</static><link name="link"><collision name="c"><geometry><box><size>0.5 2 1</size></box></geometry></collision><visual name="v"><geometry><box><size>0.5 2 1</size></box></geometry><material><ambient>1 0 0 1</ambient><diffuse>1 0 0 1</diffuse></material></visual></link></model>
+
+    <model name="robot_supurge">
+      <pose>0 0 0.05 0 0 0</pose>
+      <link name="chassis">
+        <inertial><mass>5.0</mass><inertia><ixx>0.0395</ixx><iyy>0.0395</iyy><izz>0.0625</izz></inertia></inertial>
+        <collision name="collision"><geometry><cylinder><radius>0.3</radius><length>0.1</length></cylinder></geometry></collision>
+        <visual name="visual"><geometry><cylinder><radius>0.3</radius><length>0.1</length></cylinder></geometry><material><ambient>0.2 0.2 0.8 1</ambient><diffuse>0.2 0.2 0.8 1</diffuse></material></visual>
+        <sensor name="lidar" type="gpu_lidar">
+          <pose>0 0 0.06 0 0 0</pose><topic>/scan</topic><update_rate>10</update_rate>
+          <ray><scan><horizontal><samples>360</samples><resolution>1</resolution><min_angle>-3.14159</min_angle><max_angle>3.14159</max_angle></horizontal></scan><range><min>0.15</min><max>10.0</max><resolution>0.01</resolution></range></ray>
+          <always_on>1</always_on><visualize>true</visualize>
+        </sensor>
+      </link>
+
+      <link name="left_wheel">
+        <pose>-0.1 0.35 -0.05 -1.5707 0 0</pose>
+        <inertial><mass>1.0</mass><inertia><ixx>0.0025</ixx><iyy>0.0025</iyy><izz>0.005</izz></inertia></inertial>
+        <collision name="c"><geometry><sphere><radius>0.1</radius></sphere></geometry></collision>
+        <visual name="v"><geometry><sphere><radius>0.1</radius></sphere></geometry><material><ambient>0.1 0.1 0.1 1</ambient><diffuse>0.1 0.1 0.1 1</diffuse></material></visual>
+      </link>
+      <link name="right_wheel">
+        <pose>-0.1 -0.35 -0.05 -1.5707 0 0</pose>
+        <inertial><mass>1.0</mass><inertia><ixx>0.0025</ixx><iyy>0.0025</iyy><izz>0.005</izz></inertia></inertial>
+        <collision name="c"><geometry><sphere><radius>0.1</radius></sphere></geometry></collision>
+        <visual name="v"><geometry><sphere><radius>0.1</radius></sphere></geometry><material><ambient>0.1 0.1 0.1 1</ambient><diffuse>0.1 0.1 0.1 1</diffuse></material></visual>
+      </link>
+      <link name="caster">
+        <pose>0.2 0 -0.05 0 0 0</pose>
+        <inertial><mass>0.5</mass><inertia><ixx>0.002</ixx><iyy>0.002</iyy><izz>0.002</izz></inertia></inertial>
+        <collision name="c"><geometry><sphere><radius>0.1</radius></sphere></geometry><surface><friction><ode><mu>0.0001</mu><mu2>0.0001</mu2></ode></friction></surface></collision>
+        <visual name="v"><geometry><sphere><radius>0.1</radius></sphere></geometry></visual>
+      </link>
+
+      <joint name="left_joint" type="revolute"><parent>chassis</parent><child>left_wheel</child><axis><xyz>0 0 1</xyz></axis></joint>
+      <joint name="right_joint" type="revolute"><parent>chassis</parent><child>right_wheel</child><axis><xyz>0 0 1</xyz></axis></joint>
+      <joint name="caster_joint" type="fixed"><parent>chassis</parent><child>caster</child></joint>
+
+      <plugin filename="gz-sim-diff-drive-system" name="gz::sim::systems::DiffDrive">
+        <left_joint>left_joint</left_joint><right_joint>right_joint</right_joint><wheel_separation>0.7</wheel_separation><wheel_radius>0.1</wheel_radius><topic>/cmd_vel</topic>
+      </plugin>
+    </model>
+  </world>
+</sdf>
